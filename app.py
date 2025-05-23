@@ -1,15 +1,22 @@
 from flask import Flask, render_template
-import datetime
+import requests  # For API calls
 
 app = Flask(__name__)
 
+# Sample API data (replace with real API later)
+tech_stack = [
+    {"name": "Python", "icon": "🐍", "category": "Backend"},
+    {"name": "Flask", "icon": "🚀", "category": "Framework"},
+    {"name": "Render", "icon": "☁️", "category": "Cloud"}
+]
+
 @app.route('/')
 def home():
-    return render_template('index.html', 
-                         deploy_date=datetime.datetime.now().strftime("%B %d, %Y"))
-@app.route('/test-favicon')
-def test_favicon():
-    return app.send_static_file('favicon.ico')
+    return render_template('index.html', tech=tech_stack)
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+@app.route('/api-demo')
+def api_demo():
+    # Example: Fetch random user data
+    response = requests.get('https://randomuser.me/api/')
+    user_data = response.json()['results'][0]
+    return render_template('api_demo.html', user=user_data)

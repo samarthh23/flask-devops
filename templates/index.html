@@ -1,73 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Flask App</title>
-    <link rel="icon" href="C:\Users\Samarth Hegde\Desktop\flask-devops-demo\static\favicon.ico">
-    <!-- Bootstrap 5 CSS -->
+    <title>Enhanced Flask App</title>
+    <!-- Bootstrap 5 + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Custom CSS -->
     <style>
-        .hero-section {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            color: white;
-            padding: 5rem 0;
+        :root {
+            --primary: #6e8efb;
+            --secondary: #a777e3;
         }
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #6e8efb;
+        .hero-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
     </style>
 </head>
-<!-- Add this before </body> -->
-<script>
-    // Dynamic visitor counter (simulated)
-    document.addEventListener('DOMContentLoaded', () => {
-        const counter = document.getElementById('visitor-counter');
-        let count = localStorage.getItem('visitorCount') || 1000;
-        counter.textContent = ++count;
-        localStorage.setItem('visitorCount', count);
-    });
-</script>
 <body>
-    <!-- Hero Section -->
-     <p class="text-muted">Last deployed: {{ deploy_date }}</p>
-     <p class="lead mt-2">Join <span id="visitor-counter">1000</span>+ users</p>
-    <section class="hero-section text-center">
-        <div class="container">
-            <h1 class="display-4 fw-bold">🚀 DevOps Flask App</h1>
-            <p class="lead">Automated CI/CD with Render + GitHub</p>
-            <a href="#features" class="btn btn-light btn-lg mt-3">Explore Features</a>
+    <!-- Animated Hero -->
+    <section class="hero-gradient text-white py-5">
+        <div class="container text-center py-5">
+            <h1 class="display-3 fw-bold mb-4">Welcome to My <span class="text-warning">Enhanced</span> App</h1>
+            <button id="modeToggle" class="btn btn-light btn-lg px-4">
+                <i class="bi bi-moon-stars"></i> Toggle Theme
+            </button>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="py-5">
+    <!-- Tech Stack Cards -->
+    <section class="py-5">
         <div class="container">
-            <div class="row text-center">
-                <div class="col-md-4 mb-4">
-                    <div class="feature-icon">📦</div>
-                    <h3>Dockerized</h3>
-                    <p>Containerized for consistent deployments.</p>
+            <h2 class="text-center mb-5">✨ Tech Stack</h2>
+            <div class="row g-4">
+                {% for item in tech %}
+                <div class="col-md-4">
+                    <div class="card tech-card h-100 transition-all">
+                        <div class="card-body text-center">
+                            <div class="display-4 mb-3">{{ item.icon }}</div>
+                            <h3>{{ item.name }}</h3>
+                            <span class="badge bg-primary">{{ item.category }}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="feature-icon">⚙️</div>
-                    <h3>CI/CD</h3>
-                    <p>Auto-deployed with GitHub + Render.</p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="feature-icon">📊</div>
-                    <h3>Monitoring</h3>
-                    <p>Prometheus + Grafana integration.</p>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
 
+    <!-- Interactive JS -->
+    <script>
+        // Dark/Light mode toggle
+        document.getElementById('modeToggle').addEventListener('click', () => {
+            document.documentElement.setAttribute('data-bs-theme', 
+                document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark');
+        });
+
+        // Animate cards on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.tech-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </body>
 </html>
